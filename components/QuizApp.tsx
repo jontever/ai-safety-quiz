@@ -104,7 +104,7 @@ function Timer({
 // ─── Home Screen ─────────────────────────────────────────────────────────────
 
 function HomeScreen({ onStart }: { onStart: () => void }) {
-  const moduleCount = 10;
+  const moduleCount = Object.keys(MODULE_NAMES).length;
   const questionCount = questions.length;
 
   return (

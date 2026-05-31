@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "AI Safety Practice Quiz",
   description:
-    "Practice quiz covering AI safety, security, governance, and ethics across 10 modules. Test your knowledge with exam-style multiple choice questions.",
+    "Practice quiz covering AI safety, security, governance, and ethics across 12 modules. Test your knowledge with exam-style multiple choice questions.",
   keywords: [
     "AI safety",
     "AI security",
