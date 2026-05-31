@@ -32,6 +32,7 @@ interface UserAnswer {
 
 const EXAM_DURATION_MINUTES = 120;
 const PASSING_SCORE_PCT = 80;
+const FULL_EXAM_QUESTION_LIMIT = 60;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -129,7 +130,7 @@ function HomeScreen({ onStart }: { onStart: () => void }) {
       <div className="flex justify-center gap-6 px-4 mb-10">
         {[
           { label: "Modules", value: moduleCount },
-          { label: "Questions", value: questionCount },
+          { label: "Questions", value: FULL_EXAM_QUESTION_LIMIT },
           { label: "Passing Score", value: `${PASSING_SCORE_PCT}%` },
         ].map((s) => (
           <div
@@ -192,7 +193,7 @@ function SetupScreen({
 
   const questionCount =
     moduleId === null
-      ? getAllQuestions().length
+      ? FULL_EXAM_QUESTION_LIMIT
       : getQuestionsByModule(moduleId).length;
 
   function handleBegin() {
@@ -258,7 +259,7 @@ function SetupScreen({
             }
             className="w-full border border-slate-300 rounded-lg px-3 py-2 text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
           >
-            <option value="all">All Modules ({getAllQuestions().length} questions)</option>
+            <option value="all">All Modules ({FULL_EXAM_QUESTION_LIMIT} questions, randomly sampled)</option>
             {Object.entries(MODULE_NAMES).map(([num, name]) => (
               <option key={num} value={num}>
                 Module {num}: {name} (
@@ -750,7 +751,10 @@ export default function QuizApp() {
       cfg.moduleId === null
         ? getAllQuestions()
         : getQuestionsByModule(cfg.moduleId);
-    const ordered = cfg.shuffle ? shuffleArray(pool) : pool;
+    const shuffled = cfg.shuffle ? shuffleArray(pool) : pool;
+    const ordered = cfg.moduleId === null
+      ? shuffled.slice(0, FULL_EXAM_QUESTION_LIMIT)
+      : shuffled;
     setConfig(cfg);
     setQuiz(ordered);
     setAnswers([]);
